@@ -1,0 +1,10 @@
+Configurar o asadmin(GLASSFISH) de acordo com esse link
+https://docs.oracle.com/cd/E18930_01/html/821-2416/gglpq.html#gknaf
+
+Sendo entregue:
+-EJB+JPA
+-Projeto WEB + PRIMEFACES
+-Script Banco de Dados
+
+Projeto presente no GitHub:
+https://github.com/IcaroLaudade/estoquemetodista
