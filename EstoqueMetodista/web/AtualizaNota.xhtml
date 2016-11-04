@@ -1,0 +1,44 @@
+<?xml version='1.0' encoding='UTF-8' ?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml"
+      xmlns:h="http://xmlns.jcp.org/jsf/html"
+      xmlns:p="http://primefaces.org/ui"
+      xmlns:f="http://java.sun.com/jsf/core"
+          
+      xmlns:ui="http://xmlns.jcp.org/jsf/facelets">
+
+         <ui:composition template="/WEB-INF/templates/_template.xhtml">
+          <ui:define name="title">Atualização de Nota</ui:define> 
+           <ui:define name="tituloPanel">Atualização de Nota</ui:define>
+
+        <ui:define name="conteudo"> 
+                            <h:outputLabel value="Tipo:" for="tipoNota"></h:outputLabel>
+                            <h:inputText id="tipoNota" value="#{produtoBean.nota.tipo}"
+                                         styleClass="form-control margem" 
+                                         required="true" requiredMessage="O tipo de nota deve ser informado."
+                                     >
+                                <f:ajax event="blur" render=":mensagens"/>
+                            </h:inputText>
+
+                            <p:outputLabel value="Número nota:" for="numeroNota"></p:outputLabel>
+                            <h:inputText id="numeroNota" value="#{produtoBean.nota.nNota}"
+                                         styleClass="form-control margem"
+                                         required="true" requiredMessage="O numero da nota deve ser informado."
+                                         validator="#{produtoBean.validaNnotaUnicoENumero}">
+                                <f:ajax event="blur" render=":mensagens"/>
+                            </h:inputText>
+                              <p:outputLabel for="mascara" value="Data de emissão:" />
+                            <p:calendar locale="pt" id="mascara" value="#{produtoBean.nota.dataEmissao}" pattern="dd/MM/yyyy" mask="true" 
+                                        styleClass="margem" size="25"
+                                      
+                                        />
+                          
+                             </ui:define>
+           <ui:define name="botao">
+               &nbsp; &nbsp;  <p:commandButton styleClass="btn btn-lg btn-success" immediate="true" value="Atualizar" action="#{produtoBean.atualizarNota()}"  ></p:commandButton>
+                            <p:commandButton styleClass="btn btn-lg btn-danger" value="Voltar" action="#{produtoBean.voltar()}" immediate="true" ></p:commandButton>    
+                </ui:define>
+       
+         </ui:composition>
+</html>
+

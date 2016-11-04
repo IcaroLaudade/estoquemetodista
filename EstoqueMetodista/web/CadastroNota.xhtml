@@ -1,0 +1,53 @@
+<?xml version='1.0' encoding='UTF-8' ?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml"
+      xmlns:h="http://java.sun.com/jsf/html"
+      xmlns:f="http://java.sun.com/jsf/core"
+      xmlns:c="http://java.sun.com/jsp/jstl/core"
+      xmlns:p="http://primefaces.org/ui"
+          
+      xmlns:ui="http://xmlns.jcp.org/jsf/facelets">
+
+        
+    <ui:composition template="/WEB-INF/templates/_template.xhtml">
+
+        <ui:define name="title">Cadastro de Nota</ui:define> 
+           <ui:define name="tituloPanel">Cadastro de Nota</ui:define>
+
+        <ui:define name="conteudo">        
+
+                                    <h:outputLabel value="Tipo:" for="tipoNota"></h:outputLabel>
+                                    <h:inputText id="tipoNota" value="#{produtoBean.notaCad.tipo}"
+                                                 styleClass="form-control margem" 
+                                                 required="true" requiredMessage="O tipo de nota deve ser informado."
+                                                 >
+                                        <f:ajax event="blur" render=":mensagens"/>
+                                    </h:inputText>
+
+                                    <p:outputLabel value="Número nota:" for="numeroNota"></p:outputLabel>
+                                    <h:inputText id="numeroNota" value="#{produtoBean.notaCad.nNota}"
+                                                 styleClass="form-control margem"
+                                                 required="true" requiredMessage="O numero da nota deve ser informado."
+                                                 validator="#{produtoBean.validaNnotaUnicoENumero}">
+                                        <f:ajax event="blur" render=":mensagens"/>
+                                    </h:inputText>
+                                  
+                                    <p:outputLabel for="mascara" value="Data de emissão:" />
+                                    
+                                    <p:calendar locale="pt" id="mascara" 
+                                                required="true" requiredMessage="A data de emissão é obrigatória" value="#{produtoBean.notaCad.dataEmissao}" pattern="dd/MM/yyyy" mask="true" 
+                                                styleClass="margem" size="25"
+                                            
+                                                />
+
+                                    </ui:define>  
+
+                <h:outputLabel value="Os campos com * são de preenchimento obrigatório" style="color: blue"></h:outputLabel>
+               
+                <ui:define name="botao">
+                    &nbsp; &nbsp;  <p:commandButton styleClass="btn btn-lg btn-success" value="Salvar" action="#{produtoBean.salvar}"  ></p:commandButton>
+                                     <p:commandButton styleClass="btn btn-lg btn-danger" value="Voltar" action="#{produtoBean.voltar()}"  immediate="true"></p:commandButton>
+                </ui:define>
+    </ui:composition>
+</html>
+

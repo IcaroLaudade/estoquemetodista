@@ -1,0 +1,116 @@
+<?xml version='1.0' encoding='UTF-8' ?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml"
+      xmlns:h="http://xmlns.jcp.org/jsf/html"
+      xmlns:p="http://primefaces.org/ui"
+      xmlns:f="http://java.sun.com/jsf/core"
+      xmlns:ui="http://xmlns.jcp.org/jsf/facelets"
+>
+
+  
+    <ui:composition template="/WEB-INF/templates/_templateTab.xhtml">
+
+        <ui:define name="title">Cadastro de produto na nota</ui:define> 
+        
+        <ui:define name="conteudoTab1">
+                                               
+                        <p:outputLabel value="Nome:" for="nome"></p:outputLabel>
+                        <h:inputText id="nome" value="#{produtoBean.prodCadNota.nome}"
+                                     styleClass="form-control margem"    
+                                     required="true" requiredMessage="O nome deve ser informado" 
+                                     validatorMessage="O nome deve conter pelo menos 3 caracteres">
+                            <f:validateLength minimum="3"/>
+                            <f:ajax event="blur" render=":mensagens"/>
+                        </h:inputText>
+
+                        <p:outputLabel value="Categoria: *"></p:outputLabel>
+                        <h:selectOneMenu value="#{produtoBean.prodCadNota.categoria}"  styleClass="form-control margem">
+                            <f:selectItems value="#{enumBean.categorias}" />
+                        </h:selectOneMenu> 
+
+                        <p:outputLabel for="mascara" value="Data de validade:" />
+                        <p:calendar locale="pt" id="mascara" value="#{produtoBean.prodCadNota.validade}" pattern="dd/MM/yyyy" mask="true" 
+                                    styleClass="margem" size="25"
+                                    required="true" requiredMessage="A data de validade é obrigatória"
+                                    />
+                     
+                        <p:outputLabel value="Valor R$:" for="valor"></p:outputLabel>
+                        <h:inputText id="valor" value="#{produtoBean.prodCadNota.valor}"
+                                     styleClass="form-control margem" 
+                                     required="true" requiredMessage="O valor deve ser informado" 
+                                     validator="#{produtoBean.validaValorMaiorZero}"
+                                     >  
+
+
+                            <f:convertNumber type="currency" pattern="#0.00" 
+                                             currencySymbol="R$" locale="pt_BR" />
+                            <f:ajax event="blur" render=":mensagens"/>
+                        </h:inputText>
+
+
+                        <p:outputLabel value="Quantidade:" for="quantidade"></p:outputLabel>
+                        <h:inputText id="quantidade" value="#{produtoBean.prodCadNota.quantidade}"
+                                     styleClass="form-control margem" 
+                                     required="true" requiredMessage="A quantidade do produto deve ser informada" 
+                                     validator="#{produtoBean.validaQuantidadeMaiorZero}">
+                            <f:ajax event="blur" render=":mensagens"/>
+
+
+                        </h:inputText>
+</ui:define>
+    
+          
+                 <ui:define name="conteudoTab2">
+                        <p:outputLabel value="País: *" for="pais"></p:outputLabel>
+                        <h:selectOneMenu id="pais" value="#{produtoBean.local.pais}" styleClass="form-control margem" >
+                            <f:selectItems value="#{enumBean.pais}" />
+                        </h:selectOneMenu>
+                        <p:outputLabel value="CEP:" for="cep"></p:outputLabel>
+                        <h:inputText id="cep" value="#{produtoBean.local.cep}" styleClass="form-control margem"
+                                     required="true" requiredMessage="O CEP deve ser informado.">
+                            <f:ajax event="blur" render=":mensagens"/>
+                        </h:inputText>
+                        <p:outputLabel value="Estado: *" for="estado"></p:outputLabel>
+                        <h:selectOneMenu id="estado" value="#{produtoBean.local.estado}" styleClass="form-control margem">
+                            <f:selectItems value="#{enumBean.estados}" />
+                        </h:selectOneMenu> 
+                        <p:outputLabel value="Cidade:" for="cidade"
+                                       ></p:outputLabel>
+                        <h:inputText id="cidade" value="#{produtoBean.local.cidade}"
+                                     styleClass="form-control margem"
+                                     required="true" requiredMessage="A cidade deve ser informada.">
+                            <f:ajax event="blur" render=":mensagens"/>
+                        </h:inputText>
+                        <p:outputLabel value="Bairro:" for="bairro"
+                                       ></p:outputLabel>
+                        <h:inputText id="bairro" value="#{produtoBean.local.bairro}"
+                                     styleClass="form-control margem"
+                                     required="true" requiredMessage="O bairro deve ser informada.">
+                            <f:ajax event="blur" render=":mensagens"/>
+                        </h:inputText>
+
+                        <p:outputLabel value="Rua:" for="rua"></p:outputLabel>
+                        <h:inputText id="rua" value="#{produtoBean.local.rua}" styleClass="form-control margem"
+                                     required="true" requiredMessage="A rua deve ser informada."> 
+                            <f:ajax event="blur" render=":mensagens"/>
+                        </h:inputText>
+
+                        <p:outputLabel value="Número:" for="numero"></p:outputLabel>
+                        <h:inputText id="numero" value="#{produtoBean.local.numero}" styleClass="form-control margem" converterMessage="O campo número só usa números zé"
+                                     required="true" requiredMessage="O numero deve ser informado.">
+                            <f:ajax event="blur" render=":mensagens"/>
+                            <f:convertNumber integerOnly="true" />
+                        </h:inputText>
+
+                        <h:outputLabel value="Complemento:" for="comp"></h:outputLabel>
+                        <h:inputText id="comp" value="#{produtoBean.local.complemento}" styleClass="form-control margem"></h:inputText>
+                          </ui:define>
+            <ui:define name="botao">
+                &nbsp; &nbsp;  <p:commandButton styleClass="btn btn-lg btn-success" value="Salvar" action="#{produtoBean.cadastrarProdutoNota()}"  ></p:commandButton>
+                 <p:commandButton styleClass="btn btn-lg btn-danger" value="Voltar" action="#{produtoBean.voltar()}" immediate="true" ></p:commandButton>
+            </ui:define>
+       
+      
+    </ui:composition>
+</html>
+

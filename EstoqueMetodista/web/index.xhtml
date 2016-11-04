@@ -1,0 +1,45 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml"
+      xmlns:h="http://java.sun.com/jsf/html"
+      xmlns:p="http://primefaces.org/ui"
+      xmlns:f="http://java.sun.com/jsf/core"
+      xmlns:ui="http://java.sun.com/jsf/facelets">  
+            <ui:composition template="/WEB-INF/templates/_templateLogin.xhtml">
+                
+                <ui:define name="title">Login</ui:define> 
+                <ui:define name="tituloPanel">Login do Funcionario</ui:define> 
+
+                <ui:define name="conteudo">
+                  
+                   
+                        <p:outputLabel value="Usuario:" for="usu"/>
+                        <h:inputText id="usu" value="#{funcionarioBean.funcionario.username}"
+                                     styleClass="form-control margem"  
+                                     required="true" requiredMessage="O campo usuario deve ser preenchido" 
+
+                                     validator="#{funcionarioBean.validaFuncionario}">
+                            <f:ajax event="blur" render=":mensagens" />
+                        </h:inputText>
+                        <p:outputLabel value="Senha:" for="senha"/>
+
+                        <h:inputSecret id="senha" value="#{funcionarioBean.funcionario.password}"
+                                       styleClass="form-control margem"    
+                                       required="true" requiredMessage="O campo senha deve ser preenchido"> 
+                                      
+
+                        <f:ajax event="blur" render=":mensagens"/>
+
+                        </h:inputSecret>
+                          
+                </ui:define>
+                <ui:define name="botao">
+                 
+                    &nbsp; &nbsp;   <p:commandButton styleClass="btn btn-primary"  value="Enviar"  action="#{funcionarioBean.logar}"  />
+            
+                </ui:define>
+                
+            </ui:composition>
+    
+</html>
+
+

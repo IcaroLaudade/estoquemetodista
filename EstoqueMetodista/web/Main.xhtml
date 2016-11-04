@@ -1,0 +1,176 @@
+<?xml version='1.0' encoding='UTF-8' ?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml"
+      xmlns:h="http://java.sun.com/jsf/html"
+      xmlns:p="http://primefaces.org/ui"
+      xmlns:f="http://java.sun.com/jsf/core"
+      xmlns:ui="http://xmlns.jcp.org/jsf/facelets"
+    >            
+    
+    <ui:composition template="/WEB-INF/templates/_templateDataTable.xhtml">
+              <ui:define name="title">Main</ui:define> 
+                <ui:define name="tituloPanel">Notas,Produtos e Locais de Armazenamento Cadastrados</ui:define> 
+                
+                <ui:define name="conteudo">                                              
+                        <p:dataTable id="tbNota" styleClass="table table-condensed table-hover table-striped"
+                                     var="notas" value="#{produtoBean.notas}" rowKey="#{notas.nNota}" selection="#{produtoBean.nota}" selectionMode="single" 
+                                     rowStyleClass="odd-row, even-row" style="negrito"
+                                     emptyMessage="Nenhuma nota encontrada" rows="10" widgetVar="notaProd" 
+                                     >
+
+                            <p:ajax event="rowSelect" listener="#{produtoBean.reset()}" update=":formNota" oncomplete="PF('prod').clearFilters();"/>                                           
+                            <p:ajax event="rowUnselect"  listener="#{produtoBean.reset()}" update=":formNota" oncomplete="PF('prod').clearFilters();"/>
+
+                            <p:column headerText="Tipo de nota:" filterMatchMode="contains" filterBy="#{notas.tipo}"   sortBy="#{notas.tipo}">
+                                <h:outputText value="#{notas.tipo}" />                                                        
+                            </p:column>
+
+                            <p:column headerText="Número da nota:" filterMatchMode="contains" filterBy="#{notas.nNota}" sortBy="#{notas.nNota}">
+                                <h:outputText value="#{notas.nNota}" />
+                            </p:column>
+
+                            <p:column headerText="Data de emissão:" filterMatchMode="contains" filterBy="#{notas.dataEmissao}" sortBy="#{notas.dataEmissao}">
+                                <h:outputText value="#{notas.dataEmissao}"  >
+                                    <f:convertDateTime type="date" pattern="dd/MM/yyyy"/>
+                                </h:outputText>
+
+                            </p:column>
+
+                            <f:facet name="footer">
+
+                                Total de Notas: #{produtoBean.notas.size()}
+                            </f:facet>
+
+
+                        </p:dataTable>
+
+            
+           
+                        <p:commandButton styleClass="btn btn-lg btn-primary " style=" margin:auto; display:block;" value="Cadastrar produto na Nota" disabled="#{produtoBean.nota ==null}" action="#{produtoBean.cadastraProdutoNota}" 
+                                                         title="Inserir Produto e seu Local de armazenamento na nota"/>
+                            <p:commandButton styleClass="btn btn-lg btn-warning" style=" margin:auto; display:block;" value="Alterar Nota" disabled="#{produtoBean.nota ==null}" action="#{redirecionamentoBean.atualizaNotaRedirecionamento()}" 
+                                                         title="Alterar nota"/>
+                            <p:commandButton styleClass="btn btn-lg btn-danger"  style=" margin:auto; display:block;" value="Excluir Nota" disabled="#{produtoBean.nota ==null}" action="#{produtoBean.excluirNota()}" title="Excluir nota e produtos correspondentes" update=":formNota">
+                            <p:confirm header="Confirmação de Exclusão"  message="Excluir a nota ira excluir todos os produtos e locais relacionados.Certeza?" icon="ui-icon-alert" />
+                            </p:commandButton>
+                            <p:confirmDialog global="true" style="background-color: lightgrey;" showEffect="fade" hideEffect="fade">
+        <p:commandButton value="Sim" type="button" style="background-color: green" styleClass="ui-confirmdialog-yes" icon="ui-icon-check" />
+        <p:commandButton value="Não" type="button" style="background-color: darkred" styleClass="ui-confirmdialog-no" icon="ui-icon-close" />
+    </p:confirmDialog>
+
+                          
+         
+
+                        <p:dataTable id="tbProdutos" styleClass="table table-condensed table-hover table-striped"
+                                     var="produtos" value="#{produtoBean.consultarProdutosNota()}"
+                                     rowKey="#{produtos.codigo}" selection="#{produtoBean.produto}" selectionMode="single"                                  
+                                     emptyMessage="Nenhum Produto encontrado" widgetVar="prod" rows="10">
+
+
+                            <p:ajax event="rowSelect" update=":formNota"/>
+                            <p:ajax event="rowUnselect" listener="#{produtoBean.reset()}" update=":formNota"/>
+
+                            <p:column headerText="Código:" filterMatchMode="contains" filterBy="#{produtos.codigo}" sortBy="#{produtos.codigo}" >
+
+                                <h:outputText value="#{produtos.codigo}" />
+                            </p:column>
+                            <p:column headerText="Nome:" filterMatchMode="contains" filterBy="#{produtos.nome}" sortBy="#{produtos.nome}">
+
+                                <h:outputText value="#{produtos.nome}" />
+                            </p:column>
+                            <p:column headerText=" Quantidade em estoque:" filterMatchMode="contains" filterBy="#{produtos.quantidade}" sortBy="#{produtos.quantidade}">
+
+                                <h:outputText value="#{produtos.quantidade}" />
+                            </p:column>
+
+                            <p:column headerText="Valor:" filterMatchMode="contains" filterBy="#{produtos.valor}" sortBy="#{produtos.codigo}">
+                                <h:outputText value="#{produtos.valor}" />
+                            </p:column>
+
+                            <p:column headerText="Validade:" filterMatchMode="contains" filterBy="#{produtos.validade}" sortBy="#{produtos.validade}">
+                                <h:outputText value="#{produtos.validade}" >
+                                    <f:convertDateTime type="date" pattern="dd/MM/yyyy"/>
+                                </h:outputText>
+                            </p:column>
+
+                            <p:column headerText="Categoria:" filterMatchMode="contains" filterBy="#{produtos.categoria}" sortBy="#{produtos.categoria}">                             
+                                <h:outputText value="#{produtos.categoria}" >
+                                    <p:rowToggler  />  
+                                </h:outputText>
+                            </p:column> 
+                            <f:facet name="footer">
+                                Total de Produtos: #{produtoBean.consultarProdutosNota().size()}
+                            </f:facet>
+                        </p:dataTable>
+            
+                 
+                        &nbsp;&nbsp;    <p:commandButton styleClass="btn btn-lg btn-warning " style=" margin:auto; display:block;" value="Alterar Produto" disabled="#{produtoBean.produto ==null}" action="#{redirecionamentoBean.atualizaProdutoRedirecionamento()}" 
+                                                         title="Alterar nota"/>
+                        <p:commandButton styleClass="btn btn-lg btn-danger"  style=" margin:auto; display:block;" value="Excluir Produto" disabled="#{produtoBean.produto ==null}" action="#{produtoBean.excluirProduto()}" title="Excluir nota e produtos correspondentes" update=":formNota">
+                            <p:confirm header="Confirmação de Exclusão"  message="Excluir o produto ira excluir seu local de armazenamento.Certeza?" icon="ui-icon-alert" />
+                            </p:commandButton>
+                            <p:confirmDialog global="true" style="background-color: lightgrey;" showEffect="fade" hideEffect="fade">
+        <p:commandButton value="Sim" type="button" style="background-color: green" styleClass="ui-confirmdialog-yes" icon="ui-icon-check" />
+        <p:commandButton value="Não" type="button" style="background-color: darkred" styleClass="ui-confirmdialog-no" icon="ui-icon-close" />
+    </p:confirmDialog>
+            
+                    
+                   
+                        <p:dataTable  id="tbLocal" styleClass="table table-condensed table-hover table-striped" 
+                                      var="locais" value="#{produtoBean.consultarLocalProduto()}"  
+                                      emptyMessage="Nenhum local encontrado" widgetVar="loc" rows="10" 
+                                      >
+
+                            <p:column headerText="Pais">
+                                <h:outputText value="#{locais.pais}" />
+                            </p:column>
+
+                            <p:column headerText="CEP:">
+                                <h:outputText value="#{locais.cep}" />
+                            </p:column>
+
+                            <p:column headerText="Estado">                                     
+                                <h:outputText value="#{locais.estado}" />
+                            </p:column>
+
+                            <p:column headerText="Cidade:" >                                   
+                                <h:outputText value="#{locais.cidade}" />
+                            </p:column>
+
+                            <p:column headerText="Bairro:" >                                   
+                                <h:outputText value="#{locais.bairro}" />
+                            </p:column>
+
+                            <p:column headerText="Rua:">
+                                <h:outputText value="#{locais.rua}" />
+                            </p:column>
+
+                            <p:column headerText="Número:">
+                                <h:outputText value="#{locais.numero}" />
+                            </p:column>
+
+                            <p:column headerText="Complemento:">
+                                <h:outputText value="#{locais.complemento}" />
+                            </p:column>
+                        </p:dataTable>
+                        
+                
+                    
+                    
+                </ui:define>
+
+ 
+              
+                     <ui:define name="botao">
+           
+                         &nbsp;&nbsp;  <p:commandButton id="btCad" styleClass="btn btn-lg btn-success" value="Cadastrar nota" action="#{redirecionamentoBean.cadastroNota()}" />
+                         &nbsp; <p:commandButton id="btLogout" styleClass="btn btn-lg btn-danger" icon="ui-icon-power" value="Logout" action="#{funcionarioBean.logout()}" />
+                 
+                     </ui:define>
+                
+           
+
+    </ui:composition>
+    
+</html>
+
